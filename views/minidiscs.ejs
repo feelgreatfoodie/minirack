@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CREATE A MINIDISC</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      $(document).ready(() => {
+
+        $('.btn-submit-form').click((event) => {
+          event.preventDefault()
+          var myNewMinidisc = {
+            artist: document.getElementsByName('artist')[0].value,
+            title: document.getElementsByName('title')[0].value,
+            genre: document.getElementsByName('genre')[0].value,
+            description: document.getElementsByName('description')[0].value,
+            cover_url: document.getElementsByName('cover_url')[0].value
+          }
+
+          console.log('md sent:', myNewMinidisc);
+
+          // POST WITH AJAX
+          $.ajax({
+            url: `/minidiscs`,
+            type: 'POST',
+            data: myNewMinidisc,
+            success: (response) => {
+              console.log('response', response)
+            },
+            error: function(jqXhr, textStatus, errorThrown) {
+              console.log('OOPS:', errorThrown)
+            }
+          })
+        })
+
+      })
+    </script>
+  </head>
+  <body>
+    Here I can create a new MiniDisc
+    <form action="/minidiscs" method="POST">
+      <li>Artist: <input type="text" name="artist" value=""></li>
+      <li>Title: <input type="text" name="title" value=""></li>
+      <li>Genre: <input type="text" name="genre" value=""></li>
+      <li>Description: <input type="text" name="description" value=""></li>
+      <li>Cover URL: <input type="text" name="cover_url" value=""></li>
+      <button type="submit" class="btn btn-primary btn-submit-form">Submit</button>
+    </form>
+  </body>
+</html>

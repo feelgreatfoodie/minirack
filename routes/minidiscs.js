@@ -1,6 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const knex = require('../knex')
+
+// --- FOR TEMPLATES BELOW
+
+// the page for making a new minidisc
+router.get('/new', (req, res, next) => {
+  res.render('minidiscs', {})
+})
 // READ ALL records for this table
 router.get('/', (req, res, next) => {
   knex('minidiscs')
@@ -45,6 +52,8 @@ router.put('/:id', (req, res, next) => {
   knex('minidiscs')
     .where('id', req.params.id)
     .then((data) => {
+      if (!data) return next()
+
       knex('minidiscs')
         .where('id', req.params.id)
         .limit(1)
@@ -71,6 +80,7 @@ router.delete('/:id', (req, res, next) => {
     .first()
     .then((row) => {
       if(!row) return next()
+
       knex('minidiscs')
         .del()
         .where('id', req.params.id)
